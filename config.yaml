@@ -1,0 +1,62 @@
+MODEL:
+  POINTNET:
+    AUGMENTOR:
+      NAME: "FGSM"
+      EPS: 0.5
+      ALPHA: 0.3
+    NUM_CLASSES: 10
+    TRAINING:
+      PATH: "./saved_models/da_saved_model10_dgcnn.pth"
+      BATCH_SIZE: 8
+      EPOCHS: 100
+      WORKERS: 8
+      LR: 0.001
+      BETA: [0.9,0.999]
+      LR_SCHEDULER:
+        STEP_SIZE: 20
+        GAMMA: 0.5
+      CRITERION: "CrossEntropyLoss"
+      OPTIMIZER: "Adam"
+      USE_SAVED_MODEL: False
+      DROP_LAST: True
+
+  POINT_AUGMENT:
+    NUM_CLASSES: 10
+    F_LAYERS: [64, 128, 256]
+    M_LAYERS: [256, 128]
+    T_LAYERS: [32, 16]
+    N_: 1024
+    TRAINING:
+      PATH_AUG: "./saved_models/saved_augmentor.pth"
+      PATH_CLS: "./saved_models/saved_classifier.pth"
+      BATCH_SIZE: 8
+      EPOCHS: 100
+      WORKERS: 8
+      LR:
+        AUGMENTOR:  0.001
+        CLASSIFIER: 0.001
+      BETA: [0.9,0.999]
+      LR_SCHEDULER:
+        STEP_SIZE: 20
+        GAMMA: 0.5
+      OPTIMIZER:
+        AUGMENTOR: "Adam"
+        CLASSIFIER: "Adam"
+      USE_SAVED_MODEL: False
+      DROP_LAST: True
+    
+
+
+DATA:
+  MODELNET10:
+    NAME: "MODELNET10"
+    DATA_PATH: '../ModelNet10/ModelNet10'
+    CATEGORIES: ['chair', 'sofa','bed', 'desk','monitor','night_stand','table', 'toilet','bathtub', 'dresser']
+  MODELNET40:
+    NAME: "MODELNET40"
+    DATA_PATH: '../ModelNet40'
+    CATEGORIES: ['car', 'desk', 'bookshelf', 'chair', 'night_stand', 'flower_pot', 'tent', 'bathtub', 'range_hood', 
+            'toilet', 'piano', 'bowl', 'guitar', 'person', 'monitor', 'sofa', 'cup', 'table', 'curtain', 'wardrobe', 
+            'laptop', 'plant', 'vase', 'radio', 'tv_stand', 'glass_box', 'lamp', 'airplane', 'cone', 
+            'bed', 'bottle', 'xbox', 'sink', 'mantel', 'dresser', 'keyboard', 'bench', 'stairs', 'door', 'stool']
+  
